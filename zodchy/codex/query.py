@@ -50,6 +50,9 @@ class FilterBit(abc.ABC, ClauseBit[T]):
     def value(self):
         return self._data
 
+    def __eq__(self, other: T):
+        return self._data == other
+
 
 class EQ(FilterBit[T]):
     pass
@@ -84,6 +87,12 @@ class LIKE(FilterBit[T]):
         super().__init__(value)
         self._case_sensitive = case_sensitive
 
+    def __eq__(self, other: typing.Self):
+        return (
+            self._data == other.value and
+            self._case_sensitive == other.case_sensitive
+        )
+
     @property
     def case_sensitive(self) -> bool:
         return self._case_sensitive
@@ -103,6 +112,12 @@ class NOT(FilterBit):
     def __init__(self, value: FilterBit):
         super().__init__(value)
         self._value = value
+
+    def __eq__(self, other):
+        if other is None:
+            return super().__eq__(other)
+        else:
+            return super().__eq__(other.value)
 
 
 class OrderBit(abc.ABC, ClauseBit):

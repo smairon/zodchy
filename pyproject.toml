@@ -1,13 +1,16 @@
 [tool.poetry]
 name = "zodchy"
-version = "0.1.2"
-description = ""
+version = "0.1.3"
+description = "Collection of contracts and tools for building CQRS applications"
 authors = ["Smairon <man@smairon.ru>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+python-dateutil = "^2.9.0"
 
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -22,8 +22,18 @@ class ParsingSchema:
     fieldset: str = 'fieldset'
 
 
+def _cast_bool(value: str):
+    value = value.strip().lower()
+    if value == 'false':
+        return False
+    elif value == 'true':
+        return True
+
+
 default_casting_map = types.MappingProxyType({
-    datetime.datetime: dateutil.parser.parse
+    datetime.datetime: dateutil.parser.parse,
+    datetime.date: datetime.date.fromisoformat,
+    bool: _cast_bool
 })
 
 interval_types = (
@@ -182,19 +192,19 @@ class Parser:
         return {
             re.compile('^(null)$'): lambda x, y: codex.query.IS(None),
             re.compile('^(!null)$'): lambda x, y: codex.query.NOT(codex.query.IS(None)),
-            re.compile(r'^\(([\d\-,.]+)\)$'): functools.partial(
+            re.compile(r'^\(([\dTZ:\-,.]+)\)$'): functools.partial(
                 self._interval,
                 operations=(codex.query.GT, codex.query.LT)
             ),
-            re.compile(r'^\[([\d\-,.]+)\)$'): functools.partial(
+            re.compile(r'^\[([\dTZ:\-,.]+)\)$'): functools.partial(
                 self._interval,
                 operations=(codex.query.GE, codex.query.LT)
             ),
-            re.compile(r'^\(([\d\-,.]+)]$'): functools.partial(
+            re.compile(r'^\(([\dTZ:\-,.]+)]$'): functools.partial(
                 self._interval,
                 operations=(codex.query.GT, codex.query.LE)
             ),
-            re.compile(r'^\[([\d\-,.]+)]$'): functools.partial(
+            re.compile(r'^\[([\dTZ:\-,.]+)]$'): functools.partial(
                 self._interval,
                 operations=(codex.query.GE, codex.query.LE)
             ),
