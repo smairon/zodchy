@@ -10,15 +10,14 @@ Command = dataclasses.make_dataclass('Command', (), bases=(Message,))
 Event = dataclasses.make_dataclass('Event', (), bases=(Message,))
 
 Error = dataclasses.make_dataclass('Error', (), bases=(Event,))
-
-IOEvent = dataclasses.make_dataclass('IOE', (), bases=(Event,))
 BDEvent = dataclasses.make_dataclass('BDE', (), bases=(Event,))
+IOEvent = dataclasses.make_dataclass('IOE', (), bases=(Event,))
 
 StorageEvent = dataclasses.make_dataclass('StorageEvent', (), bases=(IOEvent,))
-ResponseEvent = dataclasses.make_dataclass('ResponseEvent', (), bases=(IOEvent,))
-
 ReadEvent = dataclasses.make_dataclass('ReadEvent', (), bases=(StorageEvent,))
 WriteEvent = dataclasses.make_dataclass('WriteEvent', (), bases=(StorageEvent,))
+
+ResponseEvent = dataclasses.make_dataclass('ResponseEvent', (), bases=(IOEvent,))
 
 P = typing.TypeVar('P', bound=Query | Command)
 C = typing.TypeVar('C', bound=Context)
