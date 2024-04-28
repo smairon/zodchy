@@ -20,6 +20,5 @@ from .bits import (
     Offset
 )
 from .parsing import (
-    Param,
     NotationParser
 )
