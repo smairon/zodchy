@@ -20,5 +20,7 @@ from .bits import (
     Offset
 )
 from .parsing import (
-    NotationParser
+    NotationParser,
+    QueryType as NotationQuery,
+    TypesMapType as NotationTypesMap
 )
