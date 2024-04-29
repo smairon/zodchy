@@ -3,8 +3,13 @@ import collections.abc
 from .bits import ClauseBit
 
 T = typing.TypeVar("T")
+ParamNameType = str
+ParamValueType = str
+
+QueryType = str | collections.abc.Mapping[ParamNameType, ParamValueType]
+TypesMapType = collections.abc.Mapping[ParamNameType, type]
 
 NotationParser = typing.Callable[
-    [str | collections.abc.Mapping[str, str]],
-    collections.abc.Iterable[tuple[str, ClauseBit]]
+    [QueryType, TypesMapType],
+    collections.abc.Iterable[tuple[ParamNameType, ClauseBit]]
 ]
