@@ -10,6 +10,7 @@ from .messages import (
     Command,
     Query,
     Event,
+    Context,
     Error,
     IOEvent,
     BDEvent,
@@ -18,5 +19,5 @@ from .messages import (
     ReadEvent,
     WriteEvent,
     Frame,
-    EventStream
+    EventStream,
 )
