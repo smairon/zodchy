@@ -1,25 +1,33 @@
+import abc
 import typing
-import dataclasses
 import collections.abc
 
-Message = dataclasses.make_dataclass('Message', ())
-Context = dataclasses.make_dataclass('Context', ())
 
-Query = dataclasses.make_dataclass('Query', (), bases=(Message,))
-Command = dataclasses.make_dataclass('Command', (), bases=(Message,))
-Event = dataclasses.make_dataclass('Event', (), bases=(Message,))
+class Message(abc.ABC):
+    pass
 
-Error = dataclasses.make_dataclass('Error', (), bases=(Event,))
-BDEvent = dataclasses.make_dataclass('BDE', (), bases=(Event,))
-IOEvent = dataclasses.make_dataclass('IOE', (), bases=(Event,))
 
-StorageEvent = dataclasses.make_dataclass('StorageEvent', (), bases=(IOEvent,))
-ReadEvent = dataclasses.make_dataclass('ReadEvent', (), bases=(StorageEvent,))
-WriteEvent = dataclasses.make_dataclass('WriteEvent', (), bases=(StorageEvent,))
+class Context(abc.ABC):
+    pass
 
-ResponseEvent = dataclasses.make_dataclass('ResponseEvent', (), bases=(IOEvent,))
 
-P = typing.TypeVar('P', bound=Query | Command)
+Task = type('Task', (Message, abc.ABC), {})
+Event = type('Event', (Message, abc.ABC), {})
+
+Query = type('Query', (Task, abc.ABC), {})
+Command = type('Command', (Task, abc.ABC), {})
+
+Error = type('Error', (Event, abc.ABC), {})
+BDEvent = type('BDE', (Event, abc.ABC), {})
+IOEvent = type('IOE', (Event, abc.ABC), {})
+
+StorageEvent = type('StorageEvent', (IOEvent, abc.ABC), {})
+ReadEvent = type('ReadEvent', (StorageEvent, abc.ABC), {})
+WriteEvent = type('WriteEvent', (StorageEvent, abc.ABC), {})
+
+ResponseEvent = type('ResponseEvent', (IOEvent, abc.ABC), {})
+
+P = typing.TypeVar('P', bound=Task)
 C = typing.TypeVar('C', bound=Context)
 
 

@@ -1,24 +1,27 @@
 import typing
 import collections.abc
 
-ContractType = typing.Any
-ImplementationType = typing.Any
+DependencyContract: typing.TypeAlias = typing.Any
+DependencyImplementation: typing.TypeAlias = typing.Any
 
-CallbackContextType = collections.abc.Mapping[str, typing.Any]
-CallbackType = collections.abc.Callable[[ContractType, CallbackContextType], typing.NoReturn]
+DependencyCallbackContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
+DependencyCallback: typing.TypeAlias = collections.abc.Callable[
+    [DependencyContract, DependencyCallbackContext],
+    typing.NoReturn
+]
 
 
 class DIResolverContract(typing.Protocol):
     async def resolve(
         self,
-        contract: ContractType,
+        contract: DependencyContract,
         execution_context: collections.abc.Mapping[str, typing.Any] | None = None,
         initial_context: collections.abc.Mapping[str, typing.Any] | None = None
     ): ...
 
     def add_context(
         self,
-        contract: ContractType,
+        contract: DependencyContract,
         data: collections.abc.Mapping
     ): ...
 
@@ -32,15 +35,15 @@ class DIResolverContract(typing.Protocol):
 class DIContainerContract(typing.Protocol):
     def register_dependency(
         self,
-        implementation: ImplementationType,
-        contract: ContractType | None = None,
+        implementation: DependencyImplementation,
+        contract: DependencyContract | None = None,
         cache_scope: typing.Literal['container', 'resolver'] | None = None,
     ): ...
 
     def register_callback(
         self,
-        contract: ContractType,
-        callback: CallbackType,
+        contract: DependencyContract,
+        callback: DependencyCallback,
         trigger: typing.Literal['shutdown'],
     ):  ...
 
