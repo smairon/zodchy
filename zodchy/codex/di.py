@@ -1,8 +1,11 @@
 import typing
 import collections.abc
 
-DependencyContract: typing.TypeAlias = typing.Any
+DependencyContract: typing.TypeAlias = type
 DependencyImplementation: typing.TypeAlias = typing.Any
+DependencyContext: typing.TypeAlias = collections.abc.Mapping[DependencyContract, collections.abc.Mapping]
+ShutdownContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
+ResolverContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
 
 DependencyCallbackContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
 DependencyCallback: typing.TypeAlias = collections.abc.Callable[
@@ -15,17 +18,10 @@ class DIResolverContract(typing.Protocol):
     async def resolve(
         self,
         contract: DependencyContract,
-        execution_context: collections.abc.Mapping[str, typing.Any] | None = None,
-        initial_context: collections.abc.Mapping[str, typing.Any] | None = None
+        context: DependencyContext | None = None
     ): ...
 
-    def add_context(
-        self,
-        contract: DependencyContract,
-        data: collections.abc.Mapping
-    ): ...
-
-    async def shutdown(self, exc_type, exc_val): ...
+    async def shutdown(self, context: ShutdownContext | None = None): ...
 
     async def __aenter__(self): ...
 
@@ -47,9 +43,9 @@ class DIContainerContract(typing.Protocol):
         trigger: typing.Literal['shutdown'],
     ):  ...
 
-    def get_resolver(self) -> DIResolverContract: ...
+    def get_resolver(self, context: ResolverContext) -> DIResolverContract: ...
 
-    async def shutdown(self, exc_type: typing.Any | None = None): ...
+    async def shutdown(self, context: ShutdownContext | None = None): ...
 
     async def __aenter__(self): ...
 
