@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zodchy"
-version = "0.4.2"
+version = "0.4.3"
 description = "Collection of contracts and tools for building CQRS applications"
 authors = ["Smairon <man@smairon.ru>"]
 maintainers = ["Smairon <man@smairon.ru>"]
@@ -17,3 +17,9 @@ pytest = "^8.1.1"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dev-dependencies]
+mypy= "^1.11.1"
+
+[tool.mypy]
+disable_error_code = "import-untyped"

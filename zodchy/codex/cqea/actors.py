@@ -1,4 +1,6 @@
 import collections.abc
+import typing
+
 from .messages import (
     Message,
     Command,
@@ -9,8 +11,25 @@ from .messages import (
     Frame
 )
 
-Actor = collections.abc.Callable[[Message | Frame, ...], Message | collections.abc.Iterable[Message] | None]
-DomainActor = collections.abc.Callable[[Command, ...], BDEvent | collections.abc.Iterable[BDEvent]]
-WriteActor = collections.abc.Callable[[BDEvent, ...], IOEvent | collections.abc.Iterable[IOEvent] | Error | None]
-ReadActor = collections.abc.Callable[[Query, ...], IOEvent | collections.abc.Iterable[IOEvent] | Error]
-AuditActor = collections.abc.Callable[[Command | Query, ...], Command | Query | Error]
+P = typing.ParamSpec('P')
+
+Actor = collections.abc.Callable[
+    typing.Concatenate[Message | Frame, P],
+    Message | collections.abc.Iterable[Message] | None
+]
+DomainActor = collections.abc.Callable[
+    typing.Concatenate[Command, P],
+    BDEvent | collections.abc.Iterable[BDEvent]
+]
+WriteActor = collections.abc.Callable[
+    typing.Concatenate[BDEvent, P],
+    IOEvent | collections.abc.Iterable[IOEvent] | Error | None
+]
+ReadActor = collections.abc.Callable[
+    typing.Concatenate[Query, P],
+    IOEvent | collections.abc.Iterable[IOEvent] | Error
+]
+AuditActor = collections.abc.Callable[
+    typing.Concatenate[Command | Query, P],
+    Command | Query | Error
+]

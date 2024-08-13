@@ -1,25 +1,22 @@
 import typing
 import abc
 
-T = typing.TypeVar("T")
 
-
-class ClauseBit(typing.Generic[T]):
+class ClauseBit:
     def __init__(self, *data: typing.Self):
-        self._data = data
+        self._data: typing.Any = data
 
     @property
     def value(self):
         return self._data
 
-    def __add__(self, other: type[typing.Self]):
+    def __add__(self, other: typing.Self):
         if type(self) is ClauseBit:
             self._data = list(self._data)
             self._data.append(other)
             return self
-
         else:
-            return ClauseBit(*(self, other))
+            return ClauseBit(self, other)
 
 
 class SliceBit(ClauseBit):
@@ -32,8 +29,8 @@ class SliceBit(ClauseBit):
         return self._data
 
 
-class FilterBit(abc.ABC, ClauseBit[T]):
-    def __init__(self, value: T):
+class FilterBit(abc.ABC, ClauseBit):
+    def __init__(self, value: typing.Any):
         super().__init__()
         self._data = value
 
@@ -41,7 +38,7 @@ class FilterBit(abc.ABC, ClauseBit[T]):
     def value(self):
         return self._data
 
-    def __eq__(self, other: T):
+    def __eq__(self, other: typing.Any):
         return self._data == other
 
 

@@ -11,21 +11,49 @@ class Context(abc.ABC):
     pass
 
 
-Task = type('Task', (Message, abc.ABC), {})
-Event = type('Event', (Message, abc.ABC), {})
+class Task(Message, abc.ABC):
+    pass
 
-Query = type('Query', (Task, abc.ABC), {})
-Command = type('Command', (Task, abc.ABC), {})
 
-Error = type('Error', (Event, abc.ABC), {})
-BDEvent = type('BDE', (Event, abc.ABC), {})
-IOEvent = type('IOE', (Event, abc.ABC), {})
+class Event(Message, abc.ABC):
+    pass
 
-StorageEvent = type('StorageEvent', (IOEvent, abc.ABC), {})
-ReadEvent = type('ReadEvent', (StorageEvent, abc.ABC), {})
-WriteEvent = type('WriteEvent', (StorageEvent, abc.ABC), {})
 
-ResponseEvent = type('ResponseEvent', (IOEvent, abc.ABC), {})
+class Query(Task, abc.ABC):
+    pass
+
+
+class Command(Task, abc.ABC):
+    pass
+
+
+class Error(Event, abc.ABC):
+    pass
+
+
+class BDEvent(Event, abc.ABC):
+    pass
+
+
+class IOEvent(Event, abc.ABC):
+    pass
+
+
+class StorageEvent(IOEvent, abc.ABC):
+    pass
+
+
+class ReadEvent(StorageEvent, abc.ABC):
+    pass
+
+
+class WriteEvent(StorageEvent, abc.ABC):
+    pass
+
+
+class ResponseEvent(IOEvent, abc.ABC):
+    pass
+
 
 P = typing.TypeVar('P', bound=Task)
 C = typing.TypeVar('C', bound=Context)

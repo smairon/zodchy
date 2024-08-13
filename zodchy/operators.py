@@ -1,41 +1,52 @@
 import typing
-from .codex.query.bits import FilterBit, OrderBit, SliceBit, T
+from .codex.query.bits import FilterBit, OrderBit, SliceBit
+
+T = typing.TypeVar("T")
 
 
-class EQ(FilterBit[T]):
-    pass
+class EQ(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class NE(FilterBit[T]):
-    pass
+class NE(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class LE(FilterBit[T]):
-    pass
+class LE(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class GE(FilterBit[T]):
-    pass
+class GE(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class LT(FilterBit[T]):
-    pass
+class LT(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class GT(FilterBit[T]):
-    pass
+class GT(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class IS(FilterBit[T]):
-    pass
+class IS(FilterBit, typing.Generic[T]):
+    def __init__(self, value: T):
+        super().__init__(value)
 
 
-class LIKE(FilterBit[T]):
+class LIKE(FilterBit, typing.Generic[T]):
     def __init__(self, value: T, case_sensitive: bool = False):
         super().__init__(value)
         self._case_sensitive = case_sensitive
 
-    def __eq__(self, other: typing.Self):
+    def __eq__(self, other: object):
+        if not isinstance(other, type(self)):
+            raise NotImplemented
         return (
             self._data == other.value and
             self._case_sensitive == other.case_sensitive
@@ -46,18 +57,21 @@ class LIKE(FilterBit[T]):
         return self._case_sensitive
 
 
-class SET(FilterBit[T]):
+class SET(FilterBit, typing.Generic[T]):
     def __init__(self, *value: T):
         super().__init__(set(value))
 
 
-class RANGE(FilterBit[T]):
-    def __init__(self, left: GE | GT | None, right: LE | LT | None):
+class RANGE(FilterBit, typing.Generic[T]):
+    def __init__(self, left: GE[T] | GT[T] | None, right: LE[T] | LT[T] | None):
         super().__init__((left, right))
 
 
-class NOT(FilterBit[T]):
-    def __init__(self, value: FilterBit[T]):
+class NOT(FilterBit, typing.Generic[T]):
+    def __init__(
+        self,
+        value: EQ[T] | LE[T] | GE[T] | LT[T] | GT[T] | IS[T] | LIKE[T] | SET[T] | RANGE[T]
+    ):
         super().__init__(value)
         self._value = value
 

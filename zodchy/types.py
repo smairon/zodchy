@@ -1,3 +1,3 @@
 import typing
 
-Empty = typing.NewType('Empty', None)
+Empty = typing.NewType('Empty', object)
