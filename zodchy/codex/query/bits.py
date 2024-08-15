@@ -1,6 +1,8 @@
 import typing
 import abc
 
+T = typing.TypeVar("T")
+
 
 class ClauseBit:
     def __init__(self, *data: typing.Self):
@@ -29,13 +31,13 @@ class SliceBit(ClauseBit):
         return self._data
 
 
-class FilterBit(abc.ABC, ClauseBit):
-    def __init__(self, value: typing.Any):
+class FilterBit(abc.ABC, ClauseBit, typing.Generic[T]):
+    def __init__(self, value: T):
         super().__init__()
         self._data = value
 
     @property
-    def value(self):
+    def value(self) -> T:
         return self._data
 
     def __eq__(self, other: typing.Any):
