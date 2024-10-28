@@ -7,7 +7,7 @@ class Message(abc.ABC):
     pass
 
 
-class Context(abc.ABC):
+class Context(Message, abc.ABC):
     pass
 
 
