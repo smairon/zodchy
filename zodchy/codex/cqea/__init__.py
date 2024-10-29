@@ -7,6 +7,7 @@ from .actors import (
 )
 from .messages import (
     Message,
+    Task,
     Command,
     Query,
     Event,
