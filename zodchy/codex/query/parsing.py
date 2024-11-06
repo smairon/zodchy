@@ -8,7 +8,10 @@ ParamValue: typing.TypeAlias = str
 NotationQuery: typing.TypeAlias = str | collections.abc.Mapping[ParamName, ParamValue]
 NotationTypesMap: typing.TypeAlias = collections.abc.Mapping[ParamName, type]
 
-NotationParser: typing.TypeAlias = typing.Callable[
-    [NotationQuery, NotationTypesMap],
-    collections.abc.Iterable[tuple[ParamName, ClauseBit]]
-]
+
+class NotationParser(typing.Protocol):
+    def __call__(
+        self,
+        query: NotationQuery,
+        types_map: NotationTypesMap
+    ) -> collections.abc.Iterable[tuple[ParamName, ClauseBit]]: ...
