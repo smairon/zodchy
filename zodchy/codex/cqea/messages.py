@@ -1,6 +1,7 @@
 import abc
-import typing
 import collections.abc
+
+from ..query.bits import ClauseBit
 
 
 class Message(abc.ABC):
@@ -20,7 +21,8 @@ class Event(Message, abc.ABC):
 
 
 class Query(Task, abc.ABC):
-    pass
+    @abc.abstractmethod
+    def __iter__(self) -> collections.abc.Iterable[tuple[str, ClauseBit]]: ...
 
 
 class Command(Task, abc.ABC):
@@ -53,15 +55,6 @@ class WriteEvent(StorageEvent, abc.ABC):
 
 class ResponseEvent(IOEvent, abc.ABC):
     pass
-
-
-P = typing.TypeVar('P', bound=Task)
-C = typing.TypeVar('C', bound=Context)
-
-
-class Frame(typing.Generic[P, C]):
-    payload: P
-    context: C
 
 
 EventStream = collections.abc.Iterable[Event]
