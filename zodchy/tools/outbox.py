@@ -81,3 +81,6 @@ class OutboxClientContract(typing.Protocol[T]):
         status: FilterBit[str] | None = None,
         scheduled_at: FilterBit[datetime.datetime] | None = None,
     ) -> collections.abc.Iterable[OutboxTask]: ...
+
+class MessageProducerContract(typing.Protocol[T]):
+    async def send_message(self, message: dict, **params: typing.Any) -> None: ...

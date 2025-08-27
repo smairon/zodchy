@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zodchy"
-version = "0.6.0"
+version = "0.6.1"
 description = "Collection of contracts and tools for building CQRS applications"
 authors = ["Smairon <man@smairon.ru>"]
 maintainers = ["Smairon <man@smairon.ru>"]
