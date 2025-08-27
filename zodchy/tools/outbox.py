@@ -1,3 +1,4 @@
+import abc
 import collections.abc
 import datetime
 import typing
@@ -82,9 +83,14 @@ class OutboxClientContract(typing.Protocol[T]):
         scheduled_at: FilterBit[datetime.datetime] | None = None,
     ) -> collections.abc.Iterable[OutboxTask]: ...
 
-class OutboxDispatcherContract(typing.Protocol[T]):
-    async def send_message(
+class OutboxDispatchMessage(abc.ABC):
+    payload: dict
+
+    def __init__(self, payload: dict):
+        self.payload = payload
+        
+class OutboxDispatcherContract(typing.Protocol):
+    async def dispatch(
         self,
-        message: dict, 
-        **dispatch_settings: typing.Any
+        *messages: OutboxDispatchMessage
     ) -> None: ...
