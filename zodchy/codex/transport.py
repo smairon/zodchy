@@ -9,10 +9,12 @@ class CommunicationMessage(typing.Generic[T]):
     def __init__(
         self, 
         id: T, 
+        routing_key: str,
         body: collections.abc.Mapping,
         headers: collections.abc.Mapping | None = None
     ):
         self.id = id
+        self.routing_key = routing_key
         self.body = body
         self.headers = headers
         
