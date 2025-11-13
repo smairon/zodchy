@@ -1,9 +1,9 @@
 import typing
 
-T = typing.TypeVar('T')
+T = typing.TypeVar("T")
 
 
-class IdentifiersFactory(typing.Protocol[T]):  # type: ignore[misc]
+class IdentifiersFactoryContract(typing.Protocol[T]):  # type: ignore[misc]
     def random(self) -> T: ...
 
     def derived(self, value: str | bytes) -> T: ...
