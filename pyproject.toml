@@ -1,6 +1,6 @@
 [project]
 name = "zodchy"
-version = "1.0.2"
+version = "1.0.3"
 description = "Zodchy is set of contracts for zodchy architecture"
 authors = [
     {name = "Smairon", email = "man@smairon.ru"},

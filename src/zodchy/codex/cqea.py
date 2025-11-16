@@ -16,15 +16,15 @@ class Task(Message, abc.ABC):
     pass
 
 
+class Error(Message, abc.ABC):
+    pass
+
+
 class Command(Task, abc.ABC):
     pass
 
 
 class Event(Message, abc.ABC):
-    pass
-
-
-class Error(Event, abc.ABC):
     pass
 
 

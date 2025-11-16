@@ -74,9 +74,6 @@ class TestEvent:
 class TestError:
     """Test class for Error base class."""
 
-    def test_error_inherits_from_event(self):
-        """Test that Error inherits from Event."""
-        assert issubclass(Error, Event)
 
     def test_error_inherits_from_message(self):
         """Test that Error inherits from Message."""
@@ -152,10 +149,6 @@ class TestCQEAHierarchy:
         """Test that Event is a Message."""
         assert issubclass(Event, Message)
 
-    def test_error_is_event(self):
-        """Test that Error is an Event."""
-        assert issubclass(Error, Event)
-
     def test_view_is_event(self):
         """Test that View is an Event."""
         assert issubclass(View, Event)
@@ -202,7 +195,6 @@ class TestCQEAHierarchy:
 
         error = MyError()
         assert isinstance(error, Error)
-        assert isinstance(error, Event)
         assert isinstance(error, Message)
 
         view = MyView()
