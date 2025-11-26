@@ -3,24 +3,31 @@ import typing
 
 DependencyContract: typing.TypeAlias = type
 DependencyImplementation: typing.TypeAlias = typing.Any
-DependencyContext: typing.TypeAlias = collections.abc.Mapping[DependencyContract, collections.abc.Mapping]
+DependencyContext: typing.TypeAlias = collections.abc.Mapping[str | DependencyContract, typing.Any]
 ShutdownContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
-ResolverContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
+ResolverContext: typing.TypeAlias = collections.abc.Mapping[str | DependencyContract, typing.Any]
 
 DependencyCallbackContext: typing.TypeAlias = collections.abc.Mapping[str, typing.Any]
-DependencyCallback: typing.TypeAlias = collections.abc.Callable[
-    [DependencyContract, DependencyCallbackContext], typing.NoReturn
-]
+
+
+class DependencyCallback(typing.Protocol):
+    def __call__(
+        self,
+        dependency: DependencyImplementation,
+        context: DependencyCallbackContext,
+    ) -> typing.Any | collections.abc.Awaitable[typing.Any]: ...
 
 
 class DIResolverContract(typing.Protocol):
-    async def resolve(self, contract: DependencyContract, context: DependencyContext | None = None) -> typing.Any: ...
+    async def resolve(self, contract: DependencyContract, context: ResolverContext | None = None) -> typing.Any: ...
 
     async def shutdown(self, context: ShutdownContext | None = None) -> None: ...
 
     async def __aenter__(self) -> typing.Self: ...
 
-    async def __aexit__(self, exc_type: typing.Type[BaseException] | None, exc_val: BaseException | None, exc_tb: typing.Any) -> None: ...
+    async def __aexit__(
+        self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: typing.Any
+    ) -> None: ...
 
 
 class DIContainerContract(typing.Protocol):
@@ -47,4 +54,6 @@ class DIContainerContract(typing.Protocol):
 
     async def __aenter__(self) -> typing.Self: ...
 
-    async def __aexit__(self, exc_type: typing.Type[BaseException] | None, exc_val: BaseException | None, exc_tb: typing.Any) -> None: ...
+    async def __aexit__(
+        self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: typing.Any
+    ) -> None: ...
