@@ -1,24 +1,22 @@
 from collections.abc import AsyncIterator, Iterator
-from typing import Any, Protocol
+from typing import Any, Protocol, TypeAlias
 
 from ..codex.cqea import Message
 
-
-class AsyncMessageStreamContract(Protocol):
-    def __aiter__(self) -> AsyncIterator[Message]: ...
+AsyncMessageStreamContract: TypeAlias = AsyncIterator[Message]
 
 
 class AsyncProcessorContract(Protocol):
-    async def __call__(
+    def __call__(
         self,
         stream: AsyncMessageStreamContract,
-        *args,
-        **kwargs,
+        *args: Any,
+        **kwargs: Any,
     ) -> AsyncMessageStreamContract: ...
 
 
 class AsyncPipelineContract(Protocol):
-    async def __call__(self, *messages: Message, **kwargs: Any) -> AsyncMessageStreamContract: ...
+    def __call__(self, *messages: Message, **kwargs: Any) -> AsyncMessageStreamContract: ...
 
 
 class SyncMessageStreamContract(Protocol):
@@ -29,8 +27,8 @@ class SyncProcessorContract(Protocol):
     def __call__(
         self,
         stream: SyncMessageStreamContract,
-        *args,
-        **kwargs,
+        *args: Any,
+        **kwargs: Any,
     ) -> SyncMessageStreamContract: ...
 
 
