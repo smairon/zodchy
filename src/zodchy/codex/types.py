@@ -1,4 +1,12 @@
 import typing
 
-Empty = typing.NewType("Empty", object)
-Skip = typing.NewType("Skip", object)
+
+class NoValueType:
+    pass
+
+
+class SkipType:
+    pass
+
+
+Empty: typing.TypeAlias = NoValueType

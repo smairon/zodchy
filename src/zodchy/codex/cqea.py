@@ -1,6 +1,7 @@
 import abc
 import collections.abc
 import typing
+
 from .operator import ClauseStream
 
 
